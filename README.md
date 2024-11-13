@@ -1,7 +1,10 @@
 # Ex.No:04   FIT ARMA MODEL FOR TIME SERIES
-### Date: 12.11.2024
-### Name : Sriram S
-### Reg No : 212222240105
+# DEVELOPED BY: Dario G
+# REGISTER NO: 212222240105
+# Date: 
+
+
+
 ### AIM:
 To implement ARMA model in python.
 ### ALGORITHM:
@@ -23,36 +26,97 @@ axis limits.
 plot_acf and plot_pacf.
 ### PROGRAM:
 ```
-import pandas as pd
-from statsmodels.tsa.arima.model import ARIMA
+import numpy as np
 import matplotlib.pyplot as plt
-
-# Load dataset (replace 'your_data.csv' with the actual filename after uploading the dataset)
-data = pd.read_csv('/content/mulgrave.csv', parse_dates=['Timestamp'], index_col='Timestamp')
-
-# Selecting the "Q" column and dropping NaN values
-data_q = data['Q'].dropna()
-
-# Fit ARMA model (ARMA is a specific case of ARIMA with no differencing, so use ARIMA with order=(p, 0, q))
-p = 1  # Order of the autoregressive part
-q = 1  # Order of the moving average part
-model = ARIMA(data_q, order=(p, 0, q))
-arma_result = model.fit()
-
-# Print the model summary
-print(arma_result.summary())
-
-# Plotting the original data and the fitted values
-plt.figure(figsize=(10, 6))
-plt.plot(data_q, label='Original')
-plt.plot(arma_result.fittedvalues, color='red', label='Fitted')
-plt.title('ARMA Model Fit')
-plt.legend()
+from statsmodels.tsa.arima_process import ArmaProcess
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+```
+# Set up matplotlib settings for figure size
+```
+plt.rcParams["figure.figsize"] = (12, 6)
+```
+# Define and generate ARMA(1,1) process
+```
+ar1 = np.array([1, -0.5])  # AR coefficient: 1 for lag 0, -0.5 for lag 1
+ma1 = np.array([1, 0.4])   # MA coefficient: 1 for lag 0, 0.4 for lag 1
+arma_11_process = ArmaProcess(ar1, ma1)
+```
+# Generate 1000 data points from ARMA(1,1)
+```
+np.random.seed(42)
+sample_arma_11 = arma_11_process.generate_sample(nsample=1000)
+```
+# Plot the time series of ARMA(1,1)
+```
+plt.figure()
+plt.plot(sample_arma_11)
+plt.title("ARMA(1,1) Time Series")
+plt.xlim([0, 1000])
 plt.show()
 ```
-### Output:
+# Display the autocorrelation and partial autocorrelation plots for ARMA(1,1)
+```
+plot_acf(sample_arma_11, lags=40)
+plt.title("ACF for ARMA(1,1)")
+plt.show()
 
-![download (1)](https://github.com/user-attachments/assets/49a9e7e0-7ff2-4395-9438-03db81990fa7)
+plot_pacf(sample_arma_11, lags=40)
+plt.title("PACF for ARMA(1,1)")
+plt.show()
+```
+# Define and generate ARMA(2,2) process
+```
+ar2 = np.array([1, -0.3, 0.5])  # AR coefficients: 1 for lag 0, -0.3 for lag 1, 0.5 for lag 2
+ma2 = np.array([1, 0.2, -0.3])  # MA coefficients: 1 for lag 0, 0.2 for lag 1, -0.3 for lag 2
+arma_22_process = ArmaProcess(ar2, ma2)
+```
+# Generate 10000 data points from ARMA(2,2)
+```
+np.random.seed(42)
+sample_arma_22 = arma_22_process.generate_sample(nsample=10000)
+``` 
+# Plot the time series of ARMA(2,2)
+```
+plt.figure()
+plt.plot(sample_arma_22)
+plt.title("ARMA(2,2) Time Series")
+plt.xlim([0, 10000])
+plt.show()
+```
+# Display the autocorrelation and partial autocorrelation plots for ARMA(2,2)
+```
+plot_acf(sample_arma_22, lags=40)
+plt.title("ACF for ARMA(2,2)")
+plt.show()
 
-### RESULT:
+plot_pacf(sample_arma_22, lags=40)
+plt.title("PACF for ARMA(2,2)")
+plt.show()
+```
+
+# OUTPUT:
+# SIMULATED ARMA(1,1) PROCESS:
+![image](https://github.com/user-attachments/assets/a48dc42e-43d9-424d-9eac-c913859c40f2)
+
+
+# ACF for ARMA(1,1):
+![image](https://github.com/user-attachments/assets/713c0ce5-51c0-4efc-a0e6-ecf3b0a3cca4)
+
+
+# PACF for ARMA(1,1):
+![image](https://github.com/user-attachments/assets/fa0d74d0-124a-4d90-b19d-1711d0d119f0)
+
+
+# SIMULATED ARMA(2,2) PROCESS:
+![image](https://github.com/user-attachments/assets/bbf324c6-1126-4ebc-a41d-d99fd32999e7)
+
+
+# ACF for ARMA(2,2):
+![image](https://github.com/user-attachments/assets/f900780f-6444-40fc-99fa-971f938d9ffe)
+# PACF for ARMA(2,2):
+![image](https://github.com/user-attachments/assets/01a34c45-d8bd-4f7c-b74c-e6587afe3fa1)
+
+
+
+# RESULT:
 Thus, a python program is created to fir ARMA Model successfully.
